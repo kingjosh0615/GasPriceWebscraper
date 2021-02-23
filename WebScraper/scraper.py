@@ -1,31 +1,23 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-#from firebase import firebase
 URL = 'https://www.gasbuddy.com/usa'
 page = requests.get(URL)
 
-#item_name_list = []
-#item_sku_list = []
-#item_img_address_list = []
-#temp_int_one = 0
-state_list = []
+find_ohio = ''
 ohio_gas_price = 0
 
 path = 'C:/'
-filename = 'test1.json'
+filename = 'OhioGasPrice.json'
 data = {}
 
 soup = BeautifulSoup(page.content, 'html.parser')
-state_list = soup.find('div', class_='row')
-item_sku_list = soup.find_all('div', class_='sku')
-
-
-
-
-print(data)
+find_ohio = soup.find('a', { "id" : "OH" })
+ohio_gas_price = find_ohio.find('div', {"class" : "col-sm-2 col-xs-3 text-right"}).getText()
+print(ohio_gas_price.strip())
+data = ohio_gas_price.strip()
 
 j = json.dumps(data)
-with open('test1.json', 'w') as f:
+with open('OhioGasPrice.json', 'w') as f:
     f.write(j)
     f.close
